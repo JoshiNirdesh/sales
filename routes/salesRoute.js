@@ -1,8 +1,12 @@
 const express = require("express");
-const { addSalesController } = require("../controllers/salesController");
+const {
+  addSalesController,
+  getLeaderboardController,
+} = require("../controllers/salesController");
 
 const router = express.Router();
 
-router.post("/",addSalesController)
+router.post("/", addSalesController);
+router.get("/leaderboard", getLeaderboardController);
 
-module.exports = router
+module.exports = router;

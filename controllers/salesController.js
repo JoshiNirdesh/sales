@@ -22,4 +22,44 @@ const addSalesController = async (req,res)=>{
         })
     }
 }
-module.exports = {addSalesController}
+
+const getLeaderboardController = async (req,res)=>{
+    try {
+        const aggregate = await salesModel.aggregate([
+            {
+                $group:{
+                    _id:"$agentName",
+                    totalSales : {$sum : "$amount"},
+                    totalDeals :{$sum:"$deals"} 
+
+                }
+            },{
+                $sort:{totalSales:-1}
+            }
+        ])
+        let rank  = 1;
+
+        for(let i = 0; i<aggregate.length ; i++){
+            if(i>>0 && aggregate[i].totalSales<aggregate[i-1].totalSales){
+                rank = i+1
+            }
+            aggregate[i]={
+                rank,
+                agentName:aggregate[i]._id,
+                totalSales:aggregate[i].totalSales,
+                totalDeals:aggregate[i].totalDeals
+            }
+        }
+        res.status(200).send({
+            success:true,
+            count : aggregate.length,
+            leaderBoard : aggregate
+        })
+    } catch (error) {
+         res.status(500).send({
+      success: false,
+      message: error.message
+    });
+    }
+}
+module.exports = {addSalesController,getLeaderboardController}
