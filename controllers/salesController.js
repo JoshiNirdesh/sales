@@ -22,3 +22,4 @@ const addSalesController = async (req,res)=>{
         })
     }
 }
+module.exports = {addSalesController}

@@ -10,6 +10,8 @@ const port = process.env.PORT;
 app.use(express.json());
 connectDB();
 
+app.use("/api/sales",require("./routes/salesRoute"));
+
 app.get("/",(req,res)=>{
     res.send("Sales api running")
 })
