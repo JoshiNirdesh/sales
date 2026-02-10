@@ -8,8 +8,10 @@ dotenv.config();
 
 const port = process.env.PORT;
 app.use(express.json());
-connectDB();
 
+connectDB().then(() => {
+    console.log("MongoDB connected, starting server...");
+})
 app.use("/api/sales",require("./routes/salesRoute"));
 
 app.get("/",(req,res)=>{
